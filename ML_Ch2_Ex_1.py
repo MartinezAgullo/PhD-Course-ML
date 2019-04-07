@@ -13,7 +13,7 @@
 
 import pandas as pd
 import numpy as np
-import matplotlib
+import matplotlib.pyplot as plt
 import argparse
 
 
@@ -70,10 +70,17 @@ while i < int(Aux_df.Country.count()):
 
 # Calculate the correlation
 print("The correlation between the GDP and BLI has a correlation coefficient (r) = " + str(round(Training_df['BLI'].corr(Training_df['GDP']),5)))
+#Training_df.plot(x='GDP', y='BLI', style='o')
+plt.scatter(Training_df['GDP'], Training_df['BLI'])
+plt.text(20000, 7, 'R = ' + str(round(Training_df['BLI'].corr(Training_df['GDP']),3)))
+plt.xlabel("Gross domestic product per capita")
+plt.ylabel("Better life index")
+plt.show()
 
 
 
-#Extras
+
+# Extras
 if args.prt or args.sts or args.sort:
 	print("  -- Displaying aditional information --")
 # Display the datasets
