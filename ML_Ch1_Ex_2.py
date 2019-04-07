@@ -16,11 +16,11 @@ import matplotlib.pyplot as plt
 print("Plotting the Bernstein polynomials for n=4")
 # The matplotlib function 'plot' takes as an argument two lists of numbers.
 x = np.linspace(0,1,100)  # create evenly-spaced points in a given interval
-y0 = (1-x)**4						# Berstein n=4 j=0
+y0 = (1-x)**4						  # Berstein n=4 j=0
 y1 = 4*x*(1-x)**3					# Berstein n=4 j=1
-y2 = 6*(x**2)*(1-x)**2				# Berstein n=4 j=2
-y3 = 4*(x**3)*(1-x)					# Berstein n=4 j=3
-y4 = x**4							# Berstein n=4 j=4
+y2 = 6*(x**2)*(1-x)**2		# Berstein n=4 j=2
+y3 = 4*(x**3)*(1-x)				# Berstein n=4 j=3
+y4 = x**4							    # Berstein n=4 j=4
 
 plt.plot(x, y0, '-r', label='B (n=4,j=0)(x)')
 plt.plot(x, y1, '-g', label='B (n=4,j=1)(x)')
