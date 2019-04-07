@@ -34,21 +34,66 @@ better_life_index = pd.read_csv('OECD.txt', delimiter = ';',names = ['Country', 
 
 
 # Merge the two tables
-# The function merge will keep only the countries that are in both tables (inner join)
+#The function merge will keep only the countries that are in both tables (inner join)
 merged_table = better_life_index.merge(gdp_per_capita) # merge() is a symetric function
 
 
+# Subset division
+# First division: Training dataset and Validation-Test dataset
+index1 =np.random.choice(int(merged_table.Country.count()), int((merged_table.Country.count()+1)/2), False) 
+
+#Create two new dataframes
+Training_df = pd.DataFrame(columns = ['Country', 'BLI', 'GDP'])	#initialize
+Aux_df = pd.DataFrame(columns = ['Country', 'BLI', 'GDP'])		#initialize
+i = 0
+while i < int(merged_table.Country.count()):
+	if i in index1:
+		Training_df = Training_df.append(merged_table.loc[i], ignore_index=True)
+	else:
+		Aux_df = Aux_df.append(merged_table.loc[i], ignore_index=True) # Aux_df creates Test_df and Validation_df
+	i = i+1
+
+# Second division: Validation dataset and Test dataset
+#we repeat the previous procedure
+index1 =np.random.choice(int(Aux_df.Country.count()), int(Aux_df.Country.count()/2), False) 
+Validation_df = pd.DataFrame(columns = ['Country', 'BLI', 'GDP'])
+Test_df = pd.DataFrame(columns = ['Country', 'BLI', 'GDP'])	
+i = 0
+while i < int(Aux_df.Country.count()):
+	if i in index1:
+		Validation_df = Validation_df.append(Aux_df.loc[i], ignore_index=True)
+	else:
+		Test_df = Test_df.append(Aux_df.loc[i], ignore_index=True)
+	i = i+1
+
+
+
+# Calculate the correlation
+print("The correlation between the GDP and BLI has a correlation coefficient (r) = " + str(round(Training_df['BLI'].corr(Training_df['GDP']),5)))
 
 
 
 #Extras
+if args.prt or args.sts or args.sort:
+	print("  -- Displaying aditional information --")
 # Display the datasets
 if args.prt:
+	print("gdp_per_capita")
 	print(gdp_per_capita)
 	print("\n")
+	print("better_life_index")
 	print(better_life_index)
 	print("\n")
-	print("There are " + str(gdp_per_capita.Country.count())+" countries in the IMF list and "+str(better_life_index.Country.count())+" in the OECD list")
+	print("There are " + str(gdp_per_capita.Country.count())+" countries in the IMF list and "+str(better_life_index.Country.count())+" in the OECD list" + "\n")
+	print("_________________")
+	print(" - Training dataset - ")
+	print(Training_df)
+	print("\n"+" - Validation dataset - ")
+	print(Validation_df)
+	print("\n"+" - Test dataset - ")
+	print(Test_df)
+	print("_________________")
+	
 
 # Find mean, max, location
 if args.sts:
